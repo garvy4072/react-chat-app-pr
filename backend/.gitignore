@@ -6,6 +6,7 @@ logs
 
 node_modules
 bower_components
+
 .env.local
 .env.development.local
 .env.test.local
@@ -16,4 +17,4 @@ psd
 thumb
 sketch
 
-# End of https://mrkandreev.name/snippets/gitignore-generator/#react
+# End of https://mrkandreev.name/snippets/gitignore-generator/#react.env
