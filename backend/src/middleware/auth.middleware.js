@@ -2,7 +2,10 @@
 
 import jwt from 'jsonwebtoken';
 import User from '../models/users.model.js';
-
+import dotenv from 'dotenv';
+dotenv.config({
+	path: './.env',
+});
 export const protectroute = async (req, res, next) => {
 	try {
 		const token = req.cookies.token;
@@ -24,4 +27,3 @@ export const protectroute = async (req, res, next) => {
 		res.status(500).json({ message: 'Internal Server Error' });
 	}
 };
-export const updateProfile = async (req, res) => {};

@@ -1,6 +1,8 @@
 /** @format */
 
 import { v2 as cloudinary } from 'cloudinary';
+import { config } from 'dotenv';
+config();
 cloudinary.config({
 	cloud_name: process.env.CNAME,
 	api_key: process.env.CAPIKEY,

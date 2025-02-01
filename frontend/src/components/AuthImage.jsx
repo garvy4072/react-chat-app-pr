@@ -1,8 +1,19 @@
 /** @format */
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 function AuthImage({ title, subtitle }) {
+	const [num, setnum] = useState(0);
+	useEffect(() => {
+		const interval = setInterval(() => {
+			const randomno = Math.floor(Math.random() * 10);
+			console.log(randomno);
+			setnum(randomno);
+		}, 5000);
+		return () => {
+			clearInterval(interval);
+		};
+	}, []);
 	return (
 		<div className='hidden lg:flex items-center justify-center bg-base-200 p-12'>
 			<div className='max-w-md text-center'>
@@ -11,7 +22,7 @@ function AuthImage({ title, subtitle }) {
 						<div
 							key={i}
 							className={`aspect-square rounded-2xl bg-primary/10 ${
-								i % 2 === 0 ? 'animate-pulse' : ''
+								i % num === 0 ? 'animate-pulse bg-primary/30' : ''
 							}`}
 						/>
 					))}

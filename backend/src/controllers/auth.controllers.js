@@ -35,8 +35,8 @@ export const signup = async (req, res) => {
 			return res.status(201).json({
 				message: 'User created successfully',
 				userid: saveuser._id,
+				username: saveuser.fullname,
 				useremail: saveuser.email,
-				userpic: saveuser.profilePic,
 			});
 		}
 	} catch (err) {
@@ -60,11 +60,14 @@ export const login = async (req, res) => {
 			return res.status(400).json({ message: 'Invalid email or password' });
 		}
 		generatetoken(user._id, res);
+
 		return res.status(201).json({
 			message: 'User created successfully',
 			userid: user._id,
+			username: user.fullname,
 			useremail: user.email,
 			userpic: user.profilePic,
+			createdAt: user.createdAt,
 		});
 	} catch (err) {
 		return res.status(400).json({ message: 'Invalid request' });
@@ -72,7 +75,7 @@ export const login = async (req, res) => {
 };
 export const logout = (req, res) => {
 	try {
-		res.cookie('token', '', { maxAge: 0 });
+		res.clearCookie('token');
 		return res.status(200).json({ message: 'Logged out successfully' });
 	} catch (error) {
 		console.log(error);
@@ -83,21 +86,23 @@ export const logout = (req, res) => {
 export const updateProfile = async (req, res) => {
 	try {
 		const { profilePic } = req.body;
-		const image = req.file;
-		const path = image.path;
 		const userid = req.user._id;
 		if (!profilePic) {
 			return res.status(400).json({ message: 'Please fill in all fields' });
 		}
-		const upload = upload(profilePic);
+
+		const uploading = await upload(profilePic);
 		const updateuser = await User.findByIdAndUpdate(
 			userid,
-			{ profilePic: upload },
+			{ profilePic: uploading },
 			{ new: true }
 		);
+		console.log(uploading);
+
 		return res.status(201).json({
 			message: 'Profile updated successfully',
 			userid: updateuser._id,
+			username: updateuser.fullname,
 			useremail: updateuser.email,
 			userpic: updateuser.profilePic,
 		});
@@ -111,8 +116,10 @@ export const checkAuth = async (req, res) => {
 		return res.status(200).json({
 			message: 'User authenticated',
 			userid: user._id,
+			username: user.fullname,
 			useremail: user.email,
 			userpic: user.profilePic,
+			createdAt: user.createdAt,
 		});
 	} catch (error) {
 		console.log(error);

@@ -1,37 +1,63 @@
 /** @format */
 
 import useSound from 'use-sound';
-// import sound from '../lib/sound.mp3';
+
 import { useEffect } from 'react';
+import { useStore } from '../store/UserAuthstore';
+import {
+	CircleUser,
+	LogInIcon,
+	LogOut,
+	PersonStandingIcon,
+	Settings,
+} from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 function Navbar() {
-	const pl = () => {
-		console.log('pl');
-	};
-
-	useEffect(() => {
-		const handleScroll = () => {
-			console.log('Scroll is at 100');
-			if (window.scrollY === 300) {
-				// Runs only when scrollY is exactly 100
-				pl();
-			}
-		};
-
-		window.addEventListener('scroll', handleScroll);
-
-		return () => {
-			window.removeEventListener('scroll', handleScroll); // Cleanup function
-		};
-	}, []);
+	const { logout, authuser } = useStore();
+	const navigate = useNavigate();
 	return (
 		<div>
-			<button
-				onClick={() => {
-					// play();
-				}}
-				className='btn'>
-				btn
-			</button>
+			<nav className='navbar h-15 px-10 border-b-2 border-b-gray-900 flex items-center justify-between'>
+				<img
+					src='./logoname.png'
+					alt=''
+					className=' h-25 w-27 cursor-pointer'
+					onClick={() => navigate('/')}
+				/>
+				<div className='flex items-center'>
+					{authuser ? (
+						<div className='flex items-center'>
+							<div
+								role='button'
+								onClick={() => navigate('/setting')}
+								className='  px-4 py-2 flex justify-between  rounded-md'>
+								<Settings className='pr-2' /> Settings
+							</div>
+							<div
+								className='flex cursor-pointer'
+								onClick={() => {
+									navigate('/profile');
+								}}>
+								<CircleUser className='pr-2 ' /> Profile
+							</div>
+							<div
+								role=' button'
+								onClick={logout}
+								className=' px-4 py-2 flex  rounded-md ml-4 cursor-pointer'>
+								<LogOut className='pr-2' />
+								Logout
+							</div>
+						</div>
+					) : (
+						<div
+							role='button'
+							onClick={() => navigate('/setting')}
+							className=' text-white px-4 py-2 flex justify-between  rounded-md'>
+							<Settings className='pr-2' /> Settings
+						</div>
+					)}
+				</div>
+			</nav>
 		</div>
 	);
 }

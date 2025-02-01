@@ -12,6 +12,7 @@ import {
 	MessageSquare,
 } from 'lucide-react';
 import AuthImage from '../components/AuthImage';
+import toast from 'react-hot-toast';
 
 function SignUp() {
 	const [showpass, setShowpass] = useState(false);
@@ -22,34 +23,49 @@ function SignUp() {
 	});
 	const { issignUp, signUp } = useStore();
 	const validatefields = () => {
-		if (
-			formdata.fullname.trim() === '' ||
-			formdata.email.trim() === '' ||
-			formdata.password.trim() === ''
-		) {
-			alert('Please fill all the fields');
+		if (formdata.fullname.trim() === '') {
+			toast.error(' Please enter your full name');
+			return false;
+		}
+		if (formdata.email.trim() === '') {
+			toast.error(' Please enter your email');
+			return false;
+		}
+		if (!/^[A-Z0-9._%+-]+@[A-Z0-9 .-]+\.[A-Z]{2,4}$/i.test(formdata.email)) {
+			toast.error('Invalid email address');
+			return false;
+		}
+		if (formdata.password.trim() === '') {
+			toast.error(' Please enter your password');
+			return false;
+		}
+		if (formdata.password.length < 8) {
+			toast.error('Password must be at least 8 characters long');
 			return false;
 		}
 		return true;
 	};
 	const handlesubmit = (e) => {
 		e.preventDefault();
-		if (validatefields()) {
+		const result = validatefields();
+		if (result === true) {
 			signUp(formdata);
 		}
 	};
 	return (
 		<div className='min-h-screen grid lg:grid-cols-2'>
-			{/* left side */}
 			<div className='flex flex-col justify-center items-center p-6 sm:p-12'>
 				<div className='w-full max-w-md space-y-8'>
-					{/* LOGO */}
 					<div className='text-center mb-8'>
 						<div className='flex flex-col items-center gap-2 group'>
 							<div
 								className='size-12 rounded-xl bg-primary/10 flex items-center justify-center 
 				group-hover:bg-primary/20 transition-colors'>
-								<MessageSquare className='size-6 text-primary' />
+								<img
+									src='./logoo.png'
+									className='size-6 text-primary'
+									alt=''
+								/>
 							</div>
 							<h1 className='text-2xl font-bold mt-2'>Create Account</h1>
 							<p className='text-base-content/60'>
@@ -152,7 +168,7 @@ function SignUp() {
 							<Link
 								to='/login'
 								className='link link-primary'>
-								Sign in
+								Log in
 							</Link>
 						</p>
 					</div>
