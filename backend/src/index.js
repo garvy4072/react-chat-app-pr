@@ -42,7 +42,7 @@ app.use(
 app.options('*', cors());
 app.use(cookieparser());
 app.use(express.urlencoded({ extended: true, limit: '50mb' }));
-connection().then((res) => console.log('connected', res.connection.host));
+connection().then((res) => console.log('connected', res));
 const port = process.env.PORT;
 
 app.use('/api/auth', authRoute);
