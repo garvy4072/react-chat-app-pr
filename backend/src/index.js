@@ -16,10 +16,7 @@ dotenv.config({
 app.use(bodyParser.json({ limit: '50mb' }));
 app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
 app.use(express.json());
-const allowedOrigins = [
-	'http://localhost:5173', // Development Frontend
-	// Replace with Render frontend domain
-];
+const allowedOrigins = [''];
 app.use((req, res, next) => {
 	const origin = req.headers.origin;
 	if (allowedOrigins.includes(origin)) {
@@ -32,14 +29,12 @@ app.use((req, res, next) => {
 });
 app.use(
 	cors({
-		origin: allowedOrigins,
+		origin: '*',
 		credentials: true,
-		methods: ['GET', 'POST', 'PUT', 'DELETE'],
-		allowedHeaders: ['Content-Type', 'Authorization'],
 	})
 );
 
-app.options('*', cors());
+// app.options('*', cors());
 app.use(cookieparser());
 app.use(express.urlencoded({ extended: true, limit: '50mb' }));
 connection().then((res) => console.log('connected', res));

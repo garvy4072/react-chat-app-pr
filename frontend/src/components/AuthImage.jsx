@@ -7,7 +7,7 @@ function AuthImage({ title, subtitle }) {
 	useEffect(() => {
 		const interval = setInterval(() => {
 			const randomno = Math.floor(Math.random() * 10);
-			console.log(randomno);
+
 			setnum(randomno);
 		}, 5000);
 		return () => {
