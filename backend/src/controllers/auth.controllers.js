@@ -123,6 +123,8 @@ export const checkAuth = async (req, res) => {
 		});
 	} catch (error) {
 		console.log(error);
-		return res.status(400).json({ message: 'Invalid request' });
+		return res
+			.status(400)
+			.json({ message: 'Invalid check auth se hai request' });
 	}
 };
