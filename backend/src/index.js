@@ -35,6 +35,7 @@ app.use(cookieparser());
 app.use(express.urlencoded({ extended: true, limit: '50mb' }));
 connection().then((res) => console.log('connected'));
 const port = process.env.PORT;
+
 app.use('/api/auth', authRoute);
 app.use('/api/message', messageroute);
 server.listen(port, () => {

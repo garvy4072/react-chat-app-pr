@@ -57,7 +57,7 @@ export const sendmessage = async (req, res) => {
 		if (image) {
 			url = await upload(image);
 		}
-
+ 
 		const newmessage = new Message({
 			senderId: senderId,
 			receiverId: id,
