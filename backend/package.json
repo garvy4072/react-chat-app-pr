@@ -3,11 +3,9 @@
 	"version": "1.0.0",
 	"main": "index.js",
 	"scripts": {
-<<<<<<< HEAD
 		"start": "node index.js",
-=======
 		 "start": "node index.js",
->>>>>>> 13301f77aaab0f5e2db5abf1dd79db17b5ea5a03
+
 		"test": "echo \"Error: no test specified\" && exit 1",
 		"dev": "nodemon ./src/index.js"
 	},
