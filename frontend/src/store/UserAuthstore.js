@@ -84,7 +84,7 @@ export const useStore = create((set, get) => ({
 		const { authuser } = get();
 		if (!authuser || get().socket?.connected) return;
 
-		const socket = io('http://localhost:3000', {
+		const socket = io('https://react-chat-app-pr.onrender.com', {
 			query: {
 				userid: authuser?._id || authuser?.userid,
 			},

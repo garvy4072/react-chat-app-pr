@@ -67,25 +67,20 @@ const userChatStore = create((set, get) => ({
 			return;
 		}
 
-		// Remove previous listener to prevent duplicate events
 		socket.off('newmessage');
 
 		socket.on('newmessage', (newMessage) => {
 			console.log('New message received:', newMessage);
-
-			// Only update messages if the sender matches the selected user
 			if (newMessage.senderId !== selectedUser._id) return;
-
-			// Update messages in the store
 			set((state) => ({ messages: [...state.messages, newMessage] }));
 		});
 	},
 
 	unlistenmessages: () => {
-		const { selectedUser } = get();
-		if (!selectedUser) return;
 		const socket = useStore.getState().socket;
 		if (!socket) return;
+
+		console.log('Unlistening from messages...');
 		socket.off('newmessage');
 	},
 }));
