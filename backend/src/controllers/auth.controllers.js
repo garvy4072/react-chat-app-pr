@@ -113,6 +113,7 @@ export const updateProfile = async (req, res) => {
 export const checkAuth = async (req, res) => {
 	try {
 		const user = await User.findById(req.user._id);
+		console.log(user);
 		return res.status(200).json({
 			message: 'User authenticated',
 			userid: user._id,
