@@ -5,7 +5,7 @@ config();
 const connection = async () => {
 	try {
 		const dd = await mongoose.connect(process.env.CONNECTIONURL);
-		return dd;
+		return dd.connection.host;
 	} catch (err) {}
 };
 
