@@ -16,20 +16,29 @@ dotenv.config({
 app.use(bodyParser.json({ limit: '50mb' }));
 app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
 app.use(express.json());
+const allowedOrigins = [
+	'http://localhost:5173', // Development Frontend
+	// Replace with Render frontend domain
+];
+app.use((req, res, next) => {
+	const origin = req.headers.origin;
+	if (allowedOrigins.includes(origin)) {
+		res.setHeader('Access-Control-Allow-Origin', origin);
+	}
+	res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
+	res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+	res.setHeader('Access-Control-Allow-Credentials', 'true');
+	next();
+});
 app.use(
 	cors({
-		origin: 'http://localhost:5173',
+		origin: allowedOrigins,
 		credentials: true,
-		allowedHeaders: [
-			'Content-Type',
-			'Authorization',
-			'Cache-Control',
-			'Access-Control-Allow-Origin',
-			'Expires',
-			'pragma',
-		],
+		methods: ['GET', 'POST', 'PUT', 'DELETE'],
+		allowedHeaders: ['Content-Type', 'Authorization'],
 	})
 );
+
 app.options('*', cors());
 app.use(cookieparser());
 app.use(express.urlencoded({ extended: true, limit: '50mb' }));
@@ -39,5 +48,7 @@ const port = process.env.PORT;
 app.use('/api/auth', authRoute);
 app.use('/api/message', messageroute);
 server.listen(port, () => {
-	console.log(`Server is running on port ${port}`);
+	console.log(
+		`Server is running on port ${port} , ${process.env.CONNECTIONURL}`
+	);
 });
