@@ -7,42 +7,25 @@ dotenv.config({
 	path: './.env',
 });
 export const protectroute = async (req, res, next) => {
+	console.log('Cookies received:', req.cookies);
+	console.log('Authorization Header:', req.headers.authorization);
+
+	const token = req.cookies.token;
+	if (!token) {
+		return res.status(401).json({ message: 'Unauthorized hai' });
+	}
+
 	try {
-		// Check for the token in cookies
-		const token = req.cookies.token;
-
-		// If no token is found, respond with Unauthorized
-		if (!token) {
-			return res
-				.status(401)
-				.json({ message: 'Unauthorized: No token provided' });
-		}
-
-		// Decode the token using the secret key (no ignoreExpiration to check if token is expired)
-		let decode;
-		try {
-			decode = jwt.verify(token, process.env.JWTOKEN);
-		} catch (err) {
-			// Token expired or invalid
-			if (err.name === 'TokenExpiredError') {
-				return res.status(401).json({ message: 'Token has expired' });
-			}
-			// Invalid token error
-			return res.status(401).json({ message: 'Invalid token' });
-		}
-
-		// Find the user associated with the decoded token
-		const user = await User.findOne({ _id: decode.userid }).select('-password');
+		const decode = jwt.verify(token, process.env.JWTOKEN);
+		console.log('Decoded Token:', decode);
+		const user = await User.findById(decode.userid).select('-password');
 		if (!user) {
-			return res.status(401).json({ message: 'Unauthorized: User not found' });
+			return res.status(401).json({ message: 'Unauthorized' });
 		}
-
-		// Attach the user to the request object for further use
 		req.user = user;
 		next();
 	} catch (error) {
-		// General server error handling
-		console.log(error);
-		res.status(500).json({ message: 'Internal Server Error' });
+		console.log('JWT Verification Error:', error);
+		return res.status(401).json({ message: 'Invalid Token' });
 	}
 };
