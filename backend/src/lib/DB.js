@@ -1,9 +1,11 @@
 /** @format */
 import mongoose from 'mongoose';
+import { config } from 'dotenv';
+config();
 const connection = async () => {
 	try {
 		const dd = await mongoose.connect(process.env.CONNECTIONURL);
-		console.log(`Connected to MongoDB ${dd.connection.host}`);
+		return dd;
 	} catch (err) {}
 };
 
