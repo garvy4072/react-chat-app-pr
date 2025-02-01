@@ -6,18 +6,25 @@ import express from 'express';
 
 const app = express();
 const server = http.createServer(app);
+
 const io = new Server(server, {
 	cors: {
-		origin: ['http://localhost:5173'],
+		origin: ['http://localhost:5173'], // Allow local frontend
+		methods: ['GET', 'POST'],
+		credentials: true, // Allow cookies & authentication headers
 	},
 });
+
 const userSocketMap = {};
+
 export function getRecieverId(userid) {
 	console.log(userid);
 	return userSocketMap[userid];
 }
 
 io.on('connection', (socket) => {
+	console.log('A user connected:', socket.id);
+
 	const userId = socket.handshake.query.userid;
 	if (userId) {
 		userSocketMap[userId] = socket.id;

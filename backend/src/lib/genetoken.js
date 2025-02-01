@@ -10,7 +10,6 @@ const generatetoken = (userid, res) => {
 	res.cookie('token', token, {
 		httpOnly: true,
 		maxAge: 604800000,
-		sameSite: 'None',
 		secure: true,
 	});
 	return token;

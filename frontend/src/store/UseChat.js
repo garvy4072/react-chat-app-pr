@@ -60,13 +60,24 @@ const userChatStore = create((set, get) => ({
 	listienmessages: () => {
 		const { selectedUser } = get();
 		if (!selectedUser) return;
+
 		const socket = useStore.getState().socket;
-		if (!socket) return;
+		if (!socket) {
+			console.error('Socket not initialized');
+			return;
+		}
+
+		// Remove previous listener to prevent duplicate events
+		socket.off('newmessage');
 
 		socket.on('newmessage', (newMessage) => {
-			const ismessagesend = newMessage.senderId !== selectedUser._id;
-			if (ismessagesend) return;
-			set({ messages: [...get().messages, newMessage] });
+			console.log('New message received:', newMessage);
+
+			// Only update messages if the sender matches the selected user
+			if (newMessage.senderId !== selectedUser._id) return;
+
+			// Update messages in the store
+			set((state) => ({ messages: [...state.messages, newMessage] }));
 		});
 	},
 

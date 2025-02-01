@@ -10,7 +10,6 @@ export const protectroute = async (req, res, next) => {
 	try {
 		// Check for the token in cookies
 		const token = req.cookies.token;
-		console.log(token);
 
 		// If no token is found, respond with Unauthorized
 		if (!token) {
