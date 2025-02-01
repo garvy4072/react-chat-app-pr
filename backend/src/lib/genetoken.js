@@ -11,7 +11,7 @@ const generatetoken = (userid, res) => {
 		httpOnly: true,
 		maxAge: 604800000,
 		sameSite: 'strict',
-		secure: 'production',
+		secure: true,
 	});
 	return token;
 };
