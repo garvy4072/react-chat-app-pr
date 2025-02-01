@@ -29,12 +29,20 @@ app.use((req, res, next) => {
 });
 app.use(
 	cors({
-		origin: '*',
+		origin: 'http://localhost:5173',
+		methods: ['GET', 'POST', 'PUT', 'DELETE'],
+		allowedHeaders: [
+			'Content-Type',
+			'Authorization',
+			'Cache-Control',
+			'Expires',
+			'pragma',
+		],
 		credentials: true,
 	})
 );
 
-// app.options('*', cors());
+app.options('*', cors());
 app.use(cookieparser());
 app.use(express.urlencoded({ extended: true, limit: '50mb' }));
 connection().then((res) => console.log('connected', res));
